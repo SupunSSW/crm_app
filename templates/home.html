@@ -1,0 +1,32 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'assets/css/main.css' %}" />
+
+	<div id="navbar">
+		<!-- <a href="#">Sign Out</a> -->
+		<a href="logout" class="alink">Sign Out</a>
+	</div>
+
+
+	<section id="one" class="wrapper special">
+		<header class="major"></header>
+		<div class="inner">
+			<div class="features">
+				<div class="feature" onclick="location.href='company'">
+					<i class="fa fa-pencil-square-o"></i>
+					<h2>Companies</h2>
+				</div>
+				<div class="feature" onclick="location.href='employee'">
+					<i class="fa fa-newspaper-o"></i>
+					<h2>Employees</h2>
+				</div>
+			</div>
+		</div>
+	</section>
+
+{% endblock %}
+

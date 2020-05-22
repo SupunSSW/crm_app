@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div id="navbar" class="">
+    <a href="logout" class="alink">Sign Out</a>
+    <h3>Companies</h3>
+</div>
+
+<section id="three">
+
+    <!-- <form> -->
+    <div class="mx-auto mt-5 mb-md-5" style="width: 80%;">
+        <div class='row mb-4 mx-auto pt-4 pb-3 col-md text-center'>
+            <button class="btn btn-primary" onclick="location.href='addcom'">Add Company</button>
+        </div>
+        <div id="divcontainer">
+                        
+            <div class='mb-2 pt-4 pb-3 px-lg-4'>
+
+
+                <table class='table table-hover'>
+                    <thead>
+                        <tr>
+                            <th scope='col'>#</th>
+                            <th scope='col'>Name</th>
+                            <th scope='col'>Email</th>
+                            <th scope='col'>Website</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for c in company %}
+
+                            <tr class='contentbox' id='{{c.id}}'>
+                                <th scope='row'>{{c.id}}</th>
+                                <td>{{c.name}}</td>
+                                <td>{{c.email}}</td>
+                                <td>{{c.website}}</td>
+                                <td>
+                                    <h5><div class='float-right'>
+                                        <i class='fa fa-edit actionIcon mx-1' onclick="location.href='cedit?Cid={{c.id}}&Cnam={{c.name}}&Ema={{c.email}}&Web={{c.website}}'" ></i>
+                                        <i class='fa fa-trash-o actionIcon mx-1 deletebtn'></i>
+                                    </div></h5>
+                                </td>
+                                
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+        <input class="btn btn-light" type="button" value="Go Back" onclick="location.href='home'">
+    </div>
+
+
+</section>
+
+<button class="btn btn-light rounded-circle floatbtn" onclick="location.href='home'"><i
+    class="fa fa-home"></i></button>
+
+<script>
+    $(document).ready(function() {
+        $("#srchinput").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#divcontainer .contentbox").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+
+        $('.deletebtn').on('click',function(){
+            let result = confirm("Are you sure want to delete record?");
+            if (result) {
+                let val = $(this).closest('.contentbox').attr('id');
+                $.ajax({
+                    type: 'POST',
+                    url: 'delcprocess',
+                    data: {
+                        nindex: val,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success:function(data) {
+                        alert("Record deleted successfully!");
+                        $('#' + val).remove();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert(xhr.status);
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+{% endblock %}

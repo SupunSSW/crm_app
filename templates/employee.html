@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div id="navbar" class="">
+    <a href="logout" class="alink">Sign Out</a>
+    <h3>Employees</h3>
+</div>
+
+
+<section id="three">
+
+    <!-- <form> -->
+    <div class="mx-auto mt-5 mb-md-5" style="width: 80%;">
+        <div class='row mb-4 mx-auto pt-4 pb-3 col-md text-center'>
+            <button class="btn btn-primary" onclick="location.href='addemp'">Add Employee</button>
+        </div>
+        <div id="divcontainer">
+
+            <div class='mb-2 pt-4 pb-3 px-lg-4'>
+
+
+                <table class='table table-hover'>
+                    <thead>
+                        <tr>
+                            <th scope='col'>#</th>
+                            <th scope='col'>First Name</th>
+                            <th scope='col'>Last Name</th>
+                            <th scope='col'>Company</th>
+                            <th scope='col'>Email</th>
+                            <th scope='col'>Telephone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for e in employee %}
+
+                            <tr class='contentbox' id='{{e.id}}'>
+                                <th scope='row'>{{e.id}}</th>
+                                <td>{{e.fname}}</td>
+                                <td>{{e.lname}}</td>
+                                <td>{{e.comp}}</td>
+                                <td>{{e.email}}</td>
+                                <td>{{e.tele}}</td>
+                                <td>
+                                    <h5><div class='float-right'>
+                                        <i class='fa fa-edit actionIcon mx-1' onclick="location.href='eedit?Eid={{e.id}}&Fnam={{e.fname}}&Lnam={{e.lname}}&Com={{e.comp}}&Ema={{e.email}}&Tel={{e.tele}}'" ></i>
+                                        <i class='fa fa-trash-o actionIcon mx-1 deletebtn'></i>
+                                    </div></h5>
+                                </td>
+                                
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+        <input class="btn btn-light" type="button" value="Go Back" onclick="location.href='home'">
+    </div>
+
+
+</section>
+
+<button class="btn btn-light rounded-circle floatbtn" onclick="location.href='home'">
+    <i class="fa fa-home"></i></button>
+
+<script>
+    $(document).ready(function() {
+        
+        $(".deletebtn").click(function(event) {
+            let result = confirm("Are you sure want to delete record?");
+            if (result) {
+                let val = $(this).closest('.contentbox').attr('id');
+                $.ajax({
+                    type: 'POST',
+                    url: 'deleprocess',
+                    data: {
+                        eindex: val,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success:function(data) {
+                        alert("Record deleted successfully!");
+                        $('#' + val).remove();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert(xhr.status);
+                    }
+                });
+            }
+
+        });
+    });
+</script>
+
+{% endblock %}

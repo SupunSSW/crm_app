@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div id="navbar">
+    <a href="logout" class="alink">Sign Out</a>
+    <h3>Add new Employee</h3>
+</div>
+
+<section id="two">
+
+    <!-- <form> -->
+    <form id="mysform" method="POST" class="mx-auto mt-lg-5 mb-md-5" style="width: 80%;">
+    {% csrf_token %}
+        
+        <div class="form-row">
+
+            <div class="col-md-3 mb-3">
+                <label for="fname">First Name</label>
+                <input class="form-control" type="text" id="fname" name="tinput" placeholder="ex: Supun">
+
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="lname">Last Name</label>
+                <input class="form-control" type="text" id="lname" name="tinput" placeholder="ex: Sadeepa">
+
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="comp">Company</label>
+                <input class="form-control" type="text" id="comp" name="comp" placeholder="ex: Googles">
+
+            </div>
+
+        </div>
+
+        <div class="form-row">
+            <div class="col-md-3 mb-3">
+                <label for="email">Email</label>
+                <input class="form-control" type="email" id="email" name="email" placeholder="ex: hello@example.com">
+
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="tele">Telephone</label>
+                <input class="form-control" type="number" id="tele" name="tele" placeholder="ex: 011 2 333 444">
+
+            </div>
+        </div>
+        
+
+
+        <div class="d-flex justify-content-between">
+            <input class="btn btn-light float-left" type="button" value="Go Back" onclick="location.href='employee'">
+
+            <div>
+                <input class="btn btn-light" type="reset" value="Clear fields" id="clrbtn">
+                <button class="btn btn-primary" name="submit" id="subbutton" >Add
+                    Employee</button>
+
+            </div>
+        </div>
+
+
+        <!-- </form> -->
+    </form>
+     
+</section>
+
+<script language="JavaScript">
+
+
+    let imageData;
+
+    $('#mysform').on('submit',function(event){
+        event.preventDefault();
+
+       
+            $.ajax({
+                type: 'POST',
+                url: 'addeprocess',
+                data: {
+                    fname : $('#fname').val(),
+                    lname : $('#lname').val(),
+                    comp : $('#comp').val(),
+                    email : $('#email').val(),
+                    tele : $('#tele').val(),
+                    
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success:function(data) {
+
+                    alert("Record Added Successfully!");
+                    location.reload();
+
+                },
+                error:function(xhr,errmsg,err){
+                    alert(xhr.responseText);
+                }
+            });
+               
+    });
+
+
+</script>
+
+{% endblock %}

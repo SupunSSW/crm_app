@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div id="navbar">
+    <a href="logout" class="alink">Sign Out</a>
+    <h3>Add new Company</h3>
+</div>
+
+<section id="two">
+
+    <!-- <form> -->
+    <form method='POST' id="mynform" class="mx-auto mt-lg-5 mb-md-5" style="width: 80%;">
+        {% csrf_token %}
+
+        <div class="form-row">
+            <div class="col-md-4 mb-3">
+                <div class="col-md mb-3">
+                    <label for="cname">Name</label>
+                    <input class="form-control" type="text" id="cname" name="cname" placeholder="Name of the company">
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="col-md mb-3">
+                    <label for="email">Email</label>
+                    <input class="form-control" type="email" id="email" name="email" placeholder="Email address">
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="expdate">Logo</label>
+
+
+            </div>
+            
+        </div>
+        <div class="form-row">
+            <div class="col-md-4 mb-3">
+               <div class="col-md mb-3">
+                    <label for="web">Website</label>
+                    <input class="form-control" type="text" id="web" name="web" placeholder="Your website">
+                </div>
+            </div>
+        </div>
+        <input class="btn btn-light" type="button" value="Go Back" onclick="location.href='company'">
+        <div class="float-right">
+            <input id="clrbtn" class="btn btn-light" type="reset" value="Clear fields">
+            <button id="frmsubmit" class="btn btn-primary" name="submit">Add Company</button>
+        </div>
+
+        <!-- </form> -->
+    </form>
+
+    <script>
+        $('#mynform').on('submit', function(event){
+            event.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: 'addcprocess',
+                data: {
+                    nam : $('#cname').val(),
+                    email : $('#email').val(),
+                    web : $('#web').val(),
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                    //csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success:function(data) {
+                    $('#clrbtn').click();
+                    alert("Record Added Successfully!");
+                    location.reload();
+
+                },
+                error:function(data){
+                    alert(data);
+                }
+            });
+        });
+    </script>
+</section>
+
+{% endblock %}

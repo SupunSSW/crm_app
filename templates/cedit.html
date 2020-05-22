@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div id="navbar">
+        <a href="logout" class="alink">Sign Out</a>
+        <h3>Edit Company</h3>
+    </div>
+
+
+    <section id="two">
+
+    <!-- <form> -->
+    <form id="editnform" class="mx-auto mt-lg-5 mb-md-5" style="width: 80%;">
+        <div class="form-row mb-5">
+
+            <label id="sidVal"><strong>ID : <span class="label label-default px-2 py-1">{{company.id}}</span></strong></label>
+            <input type="text" id="nid_n" style="display:none;" value="{{company.id}}">
+
+        </div>
+                
+        <div class="form-row">
+            <div class="col-md-4 mb-3">
+                <div class="col-md mb-3">
+                    <label for="cname">Name</label>
+                    <input class="form-control" type="text" id="cname" name="cname" placeholder="Name of the company" value="{{company.name}}">
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="col-md mb-3">
+                    <label for="email">Email</label>
+                    <input class="form-control" type="email" id="email" name="email" placeholder="Email address" value="{{company.email}}">
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="expdate">Logo</label>
+
+
+            </div>
+            
+        </div>
+        <div class="form-row">
+            <div class="col-md-4 mb-3">
+               <div class="col-md mb-3">
+                    <label for="web">Website</label>
+                    <input class="form-control" type="text" id="web" name="web" placeholder="Your website" value="{{company.website}}">
+                </div>
+            </div>
+        </div>
+        <input class="btn btn-light" type="button" value="Go to Home" onclick="location.href='home'">
+        <div class="float-right">
+            <input id="clrbtn" class="btn btn-light" type="reset" value="Clear fields">
+            <button id="frmsubmit" class="btn btn-primary" name="submit">Update Company</button>
+        </div>
+            
+        <!-- </form> -->
+    </form>
+    </section>
+
+    <script>
+        $('#editnform').on('submit', function(event){
+            event.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: 'editcprocess',
+                data: {
+                    nidn : $('#nid_n').val(),
+                    name: $('#cname').val(),
+                    email: $('#email').val(),
+                    web: $('#web').val(),
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                    //csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success:function(data) {
+                    alert("Updated Successfully!");
+                    location.replace('company');
+
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(ajaxOptions);
+                }
+            });
+        });
+    </script>
+
+
+{% endblock  %}
